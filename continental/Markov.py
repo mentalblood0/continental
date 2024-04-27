@@ -1,4 +1,5 @@
 import dataclasses
+import sys
 import codecs
 import io
 import random
@@ -38,7 +39,7 @@ class Markov:
 
         return self.dictionary[self.current]
 
-    def create(self, stream: io.BytesIO):
+    def create(self, stream: typing.Union[io.BytesIO, sys.stdin.buffer.__class__]):
         words: typing.Dict[str, int] = {}
         net: typing.Dict[int, typing.Dict[int, int]] = {}
 
