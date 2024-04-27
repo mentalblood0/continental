@@ -69,12 +69,9 @@ class Markov:
                         add(w)
                         w = ""
                     add(c)
-                    continue
-                else:
-                    if (c := c.lower()) in self.letters:
-                        w += c
-                        continue
-                if w:
+                elif (c := c.lower()) in self.letters:
+                    w += c
+                elif w:
                     add(w)
                     w = ""
 
