@@ -19,7 +19,7 @@ args = parser.parse_args()
 
 m = Markov(Dict(args.dictionary), Net(args.net), args.encoding)
 if args.mode == "create":
-    m.create(sys.stdin.buffer, args.limit)
+    m.create(sys.stdin.buffer)
 elif args.mode == "generate":
     if not args.limit:
         exit()
