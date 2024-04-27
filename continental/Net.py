@@ -100,9 +100,9 @@ class Net(File):
         for i in range(next_words_number):
             total_frequency_left = self.frequency_norm * (next_words_number - i)
             current_frequency = self.read_integer(self.word_frequency_size)
+            position = self.read_integer(self.word_identifier_position_size)
 
             if (random.uniform(0, 1) <= (current_frequency / total_frequency_left)) or (i == next_words_number - 1):
-                position = self.read_integer(self.word_identifier_position_size)
                 f.seek(position)
                 return self.read_integer(self.word_identifier_size)
 

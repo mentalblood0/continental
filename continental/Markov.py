@@ -43,8 +43,8 @@ class Markov:
         w = ""
         last: typing.Union[int, None] = None
 
-        for line in stream:
-            for c in line.decode(encoding=self.encoding):
+        while batch := stream.read(4).decode(encoding=self.encoding):
+            for c in batch:
                 if c == "\n":
                     continue
                 if c in self.letters:
