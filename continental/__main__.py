@@ -24,7 +24,6 @@ elif args.mode == "generate":
     if not args.limit:
         exit()
 
-    sys.stdout.write(next(m))
-    for word in itertools.islice(m, args.limit - 1):
-        sys.stdout.write(f" {word}")
+    for word in itertools.islice(m.text, args.limit):
+        sys.stdout.write(word)
     sys.stdout.write("\n")

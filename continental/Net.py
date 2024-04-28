@@ -43,7 +43,6 @@ class Net(File):
         with self.path.open("wb") as f:
             f.seek(self.word_identifier_position_size)
             for p in d:
-                normalized = self.normalized(p[1])
                 f.write(
                     self.encode(p[0], self.word_identifier_size)
                     + self.encode(len(p[1]), self.next_words_number_size)
@@ -52,7 +51,7 @@ class Net(File):
                         + self.encode(
                             ids_positions[n[1]] + self.word_identifier_position_size, self.word_identifier_position_size
                         )
-                        for n in normalized
+                        for n in self.normalized(p[1])
                     )
                 )
             ids_positions_start = f.tell()

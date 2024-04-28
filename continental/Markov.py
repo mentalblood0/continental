@@ -1,8 +1,8 @@
-import dataclasses
-import sys
 import codecs
+import dataclasses
 import io
 import random
+import sys
 import typing
 
 from .Dict import Dict
@@ -14,14 +14,19 @@ class Markov:
     dictionary: Dict
     net: Net
     encoding: str
-    current: typing.Union[int, None] = None
+    current: typing.Union[typing.Tuple[int, str], None] = None
     letters: str = "qwertyuiopasdfghjklzxcvbnmйцукенгшщзхфывапролджэячсмитьбюъё"
-    punctuation: str = ',:-.!?;'
+    punctuation: str = ",:-"
+    endings: str = ".!?;"
 
     def shuffle(self):
-        self.current = random.randrange(0, len(self.dictionary))
+        self.reset(random.randrange(0, len(self.dictionary)))
+
+    def reset(self, target: int):
+        self.current = (target, self.dictionary[target])
 
     def __iter__(self):
+        self.shuffle()
         return self
 
     def __next__(self):
@@ -29,15 +34,26 @@ class Markov:
             self.shuffle()
         assert self.current is not None
 
-        while True:
-            result = self.net.next(self.current)
-            if result == self.current:
-                self.shuffle()
-            else:
-                self.current = result
-                break
+        while (result := self.net.next(self.current[0])) == self.current[0]:
+            self.shuffle()
+        self.reset(result)
 
-        return self.dictionary[self.current]
+        return self.current[1]
+
+    @property
+    def text(self):
+        last = None
+        for word in self:
+            if last is None:
+                result = word.capitalize()
+            elif last in self.endings:
+                result = f' {word.capitalize()}'
+            elif word in self.punctuation or word in self.endings:
+                result = word
+            else:
+                result = f' {word}'
+            last = word
+            yield result
 
     def create(self, stream: typing.Union[io.BytesIO, sys.stdin.buffer.__class__]):
         words: typing.Dict[str, int] = {}
@@ -45,26 +61,28 @@ class Markov:
 
         w = ""
         last: typing.Union[int, None] = None
-        encoded = codecs.iterdecode(stream, self.encoding)
 
         def add(word: str):
             nonlocal last
             nonlocal words
             nonlocal net
+
             if word not in words:
                 words[word] = len(words)
             i = words[word]
+            
             if last is not None:
                 if last not in net:
                     net[last] = {}
                 if i not in net[last]:
                     net[last][i] = 0
                 net[last][i] += 1
+
             last = i
 
-        for line in encoded:
+        for line in codecs.iterdecode(stream, self.encoding):
             for c in line:
-                if c in self.punctuation:
+                if (c in self.punctuation) or (c in self.endings):
                     if w:
                         add(w)
                         w = ""
@@ -75,8 +93,7 @@ class Markov:
                     add(w)
                     w = ""
 
-
-        encoded.close()
+        stream.close()
 
         self.dictionary.create([t[0] for t in list(sorted(words.items(), key=lambda w: w[1]))])
         self.net.create(
