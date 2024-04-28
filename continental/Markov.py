@@ -47,9 +47,13 @@ class Markov:
             if last is None:
                 result = word.capitalize()
             elif last in self.endings:
+                if word in self.punctuation or word in self.endings:
+                    continue
                 result = f' {word.capitalize()}'
             elif word in self.punctuation or word in self.endings:
                 result = word
+                if word in self.endings:
+                    self.current = None
             else:
                 result = f' {word}'
             last = word
