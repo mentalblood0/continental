@@ -16,8 +16,8 @@ class Markov:
     net: Net
     encoding: str
     current: typing.Union[typing.Tuple[int, str], None] = None
-    letters: str = "qwertyuiopasdfghjklzxcvbnmйцукенгшщзхфывапролджэячсмитьбюъё"
-    punctuation: str = ",:-"
+    letters: str = "qwertyuiopasdfghjklzxcvbnmйцукенгшщзхфывапролджэячсмитьбюъё-"
+    punctuation: str = ",:"
     endings: str = ".!?;"
 
     def shuffle(self):
