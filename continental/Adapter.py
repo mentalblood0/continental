@@ -1,8 +1,8 @@
-import dataclasses
-import codecs
-import typing
-import sys
 import abc
+import codecs
+import dataclasses
+import sys
+import typing
 
 
 @dataclasses.dataclass

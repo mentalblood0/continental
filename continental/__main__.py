@@ -1,16 +1,16 @@
 import argparse
-import json
 import itertools
+import json
 import pathlib
 import sys
 
+from . import adapters
 from .Dict import Dict
 from .Markov import Markov
 from .Net import Net
-from . import adapters
 
 parser = argparse.ArgumentParser(
-    prog="Continental", description="Create on-disk markov chain and generate text using it"
+    prog="Continental", description="Create on-disk Markov chain and generate text using it"
 )
 subparsers = parser.add_subparsers(dest="subparser_name")
 

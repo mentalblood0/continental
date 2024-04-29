@@ -1,6 +1,6 @@
 <h1 align="center">📖 continental</h1>
 
-<h3 align="center">Create on-disk markov chain and generate text using it</h3>
+<h3 align="center">Create on-disk Markov chain and generate text using it</h3>
 
 <p align="center">
 <a href="https://github.com/MentalBlood/continental/blob/master/.github/workflows/lint.yml"><img alt="Lint Status" src="https://github.com/MentalBlood/continental/actions/workflows/lint.yml/badge.svg"></a>

@@ -1,6 +1,6 @@
-import re
 import dataclasses
 import json
+import re
 
 from ..Adapter import Adapter
 
