@@ -20,11 +20,11 @@ python3 -m pip install --upgrade git+https://github.com/mentalblood/continental
 ### Create
 
 ```bash
-cat ~/Downloads/telegram_dumps/* | python -m continental adapt -m telegram -c '{"users": ["Степан Нечепоренко"]}' | python -m continental create -d Степан\ Нечепоренко.cd -n Степан\ Нечепоренко.cn
+cat ~/Downloads/telegram_dumps/* | python -m continental adapt -m telegram -c '{"users": ["Степан Нечепоренко"]}' | python -m continental create -o ~/continental_nets/Степан\ Нечепоренко
 ```
 
 ### Generate
 
 ```bash
-python3 -m continental generate -d Степан\ Нечепоренко.cd -n Степан\ Нечепоренко.cn -l 1000
+python -m continental generate -i ~/continental_nets/Степан\ Нечепоренко -l 1000
 ```
