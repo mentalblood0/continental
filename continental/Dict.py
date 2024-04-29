@@ -46,14 +46,14 @@ class Dict(File):
         f.seek(result["ids_positions_start"])
         result["positions_and_lengths"] = []
         for _ in range(result["size"]):
-            p = self.read_integer(self.word_position_size)
-            l = self.read_integer(self.word_length_size)
-            result["positions_and_lengths"].append([p, l])
+            position = self.read_integer(self.word_position_size)
+            length = self.read_integer(self.word_length_size)
+            result["positions_and_lengths"].append([position, length])
 
         f.seek(words_position)
         result["words"] = []
-        for _, l in result["positions_and_lengths"]:
-            result["words"].append(f.read(l))
+        for _, length in result["positions_and_lengths"]:
+            result["words"].append(f.read(length))
 
         return result
 

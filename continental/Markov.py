@@ -1,5 +1,4 @@
 import codecs
-import math
 import dataclasses
 import io
 import random
