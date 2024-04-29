@@ -12,7 +12,7 @@
 ## Installation
 
 ```bash
-python3 -m pip install --upgrade git+https://github.com/mentalblood/continental
+python -m pip install --upgrade git+https://github.com/mentalblood/continental
 ```
 
 ## Usage
