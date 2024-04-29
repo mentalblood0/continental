@@ -30,8 +30,8 @@ class Telegram(Adapter):
                     self._collecting_message = True
                 elif ('"text_entities": []' in line) or ('"forwarded_from": ' in line):
                     self._user = None
-            elif '"from": "' in line:
-                candidate_user = next(iter(re.finditer('"from": "(.*)",\n', line))).group(1)
+            elif '"from_id": "' in line:
+                candidate_user = next(iter(re.finditer('"from_id": "(.*)",\n', line))).group(1)
                 if candidate_user in self.users:
                     self._user = candidate_user
                     self.collecting_message = True

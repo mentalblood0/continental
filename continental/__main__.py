@@ -38,7 +38,7 @@ elif args.subparser_name == "generate":
     if args.limit <= 0:
         exit()
 
-    assert args.input.isdir()
+    assert args.input.is_dir()
     m = Markov(Dict(args.input / "dictionary"), Net(args.input / "net"))
 
     for word in itertools.islice(m.text, args.limit):
