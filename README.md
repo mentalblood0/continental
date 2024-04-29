@@ -1,4 +1,4 @@
-<h1 align="center">📜 continental</h1>
+<h1 align="center">📖 continental</h1>
 
 <h3 align="center">Create on-disk markov chain and generate text using it</h3>
 
