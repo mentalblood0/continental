@@ -40,7 +40,7 @@ elif args.subparser_name == "generate":
     if args.limit <= 0:
         exit()
 
-    m = Markov(Dict(args.dictionary), Net(args.net), args.encoding)
+    m = Markov(Dict(args.dictionary), Net(args.net), "utf8")
 
     for word in itertools.islice(m.text, args.limit):
         sys.stdout.write(word)
