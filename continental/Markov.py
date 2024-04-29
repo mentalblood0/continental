@@ -14,7 +14,7 @@ from .Net import Net
 class Markov:
     dictionary: Dict
     net: Net
-    encoding: str
+    encoding: str = "utf8"
     current: typing.Union[typing.Tuple[int, str], None] = None
     letters: str = "qwertyuiopasdfghjklzxcvbnmйцукенгшщзхфывапролджэячсмитьбюъё-"
     punctuation: str = ",:"
@@ -35,7 +35,7 @@ class Markov:
             self.shuffle()
         assert self.current is not None
 
-        while (result := self.net.next(self.current[0])) == self.current[0]:
+        if (result := self.net.next(self.current[0])) == self.current[0]:
             self.current = None
             return "."
         self.set(result)

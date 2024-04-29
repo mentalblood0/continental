@@ -15,14 +15,11 @@ parser = argparse.ArgumentParser(
 subparsers = parser.add_subparsers(dest="subparser_name")
 
 create = subparsers.add_parser("create")
-create.add_argument("-d", "--dictionary", type=pathlib.Path, required=True)
-create.add_argument("-n", "--net", type=pathlib.Path, required=True)
-create.add_argument("-l", "--limit", type=int, default=None)
+create.add_argument("-o", "--output", type=pathlib.Path, required=True)
 create.add_argument("-e", "--encoding", type=str, default="utf8")
 
 generate = subparsers.add_parser("generate")
-generate.add_argument("-d", "--dictionary", type=pathlib.Path, required=True)
-generate.add_argument("-n", "--net", type=pathlib.Path, required=True)
+generate.add_argument("-i", "--input", type=pathlib.Path, required=True)
 generate.add_argument("-l", "--limit", type=int, required=True)
 
 adapt = subparsers.add_parser("adapt")
@@ -34,13 +31,15 @@ adapt.add_argument("-c", "--config", type=str, required=False, default="{}")
 args = parser.parse_args()
 
 if args.subparser_name == "create":
-    m = Markov(Dict(args.dictionary), Net(args.net), args.encoding).create(sys.stdin.buffer)
+    args.output.mkdir(parents=True, exist_ok=True)
+    m = Markov(Dict(args.output / "dictionary"), Net(args.output / "net"), args.encoding).create(sys.stdin.buffer)
 
 elif args.subparser_name == "generate":
     if args.limit <= 0:
         exit()
 
-    m = Markov(Dict(args.dictionary), Net(args.net), "utf8")
+    assert args.input.isdir()
+    m = Markov(Dict(args.input / "dictionary"), Net(args.input / "net"))
 
     for word in itertools.islice(m.text, args.limit):
         sys.stdout.write(word)
