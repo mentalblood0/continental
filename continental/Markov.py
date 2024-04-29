@@ -1,4 +1,5 @@
 import codecs
+import math
 import dataclasses
 import io
 import random
@@ -20,9 +21,9 @@ class Markov:
     endings: str = ".!?;"
 
     def shuffle(self):
-        self.reset(random.randrange(0, len(self.dictionary)))
+        self.set(random.randrange(0, len(self.dictionary)))
 
-    def reset(self, target: int):
+    def set(self, target: int):
         self.current = (target, self.dictionary[target])
 
     def __iter__(self):
@@ -35,8 +36,9 @@ class Markov:
         assert self.current is not None
 
         while (result := self.net.next(self.current[0])) == self.current[0]:
-            self.shuffle()
-        self.reset(result)
+            self.current = None
+            return "."
+        self.set(result)
 
         return self.current[1]
 
@@ -45,17 +47,19 @@ class Markov:
         last = None
         for word in self:
             if last is None:
+                if word in self.punctuation or word in self.endings:
+                    continue
                 result = word.capitalize()
             elif last in self.endings:
                 if word in self.punctuation or word in self.endings:
                     continue
-                result = f' {word.capitalize()}'
+                result = f" {word.capitalize()}"
             elif word in self.punctuation or word in self.endings:
                 result = word
                 if word in self.endings:
                     self.current = None
             else:
-                result = f' {word}'
+                result = f" {word}"
             last = word
             yield result
 
@@ -74,7 +78,7 @@ class Markov:
             if word not in words:
                 words[word] = len(words)
             i = words[word]
-            
+
             if last is not None:
                 if last not in net:
                     net[last] = {}
@@ -101,5 +105,11 @@ class Markov:
 
         self.dictionary.create([t[0] for t in list(sorted(words.items(), key=lambda w: w[1]))])
         self.net.create(
-            [tuple[int, list[tuple[int, int]]]([a[0], [b for b in set(a[1].items())]]) for a in net.items() if a[1]]
+            [
+                tuple[int, list[tuple[int, int]]](
+                    [a[0], [b for b in set(a[1].items())]]
+                )
+                for a in net.items()
+                if a[1]
+            ]
         )

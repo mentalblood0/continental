@@ -26,4 +26,4 @@ elif args.mode == "generate":
 
     for word in itertools.islice(m.text, args.limit):
         sys.stdout.write(word)
-    sys.stdout.write("\n")
+    sys.stdout.write(".\n")
