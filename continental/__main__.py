@@ -15,18 +15,40 @@ parser = argparse.ArgumentParser(
 subparsers = parser.add_subparsers(dest="subparser_name")
 
 create = subparsers.add_parser("create")
-create.add_argument("-o", "--output", type=pathlib.Path, required=True)
-create.add_argument("-e", "--encoding", type=str, default="utf8")
+create.add_argument(
+    "-o",
+    "--output",
+    type=pathlib.Path,
+    required=True,
+    description="Directory for output files (will be created if not exists)",
+)
+create.add_argument("-e", "--encoding", type=str, default="utf8", description="Input encoding")
 
 generate = subparsers.add_parser("generate")
-generate.add_argument("-i", "--input", type=pathlib.Path, required=True)
-generate.add_argument("-l", "--limit", type=int, required=True)
+generate.add_argument(
+    "-i",
+    "--input",
+    type=pathlib.Path,
+    required=True,
+    description='Directory with input files (which was created with "create" command)',
+)
+generate.add_argument("-l", "--limit", type=int, required=True, description="Number of words to output")
 
 adapt = subparsers.add_parser("adapt")
-adapt.add_argument("-e", "--encoding", type=str, default="utf8")
+adapt.add_argument("-e", "--encoding", type=str, default="utf8", description="Input encoding")
 adapters = {name.lower(): getattr(adapters, name) for name in dir(adapters) if not name.startswith("_")}
-adapt.add_argument("-m", "--mode", type=str, required=True, default=next(iter(adapters)), choices=[*adapters.keys()])
-adapt.add_argument("-c", "--config", type=str, required=False, default="{}")
+adapt.add_argument(
+    "-m",
+    "--mode",
+    type=str,
+    required=True,
+    default=next(iter(adapters)),
+    choices=[*adapters.keys()],
+    description="Adapter name",
+)
+adapt.add_argument(
+    "-c", "--config", type=str, required=False, default="{}", description="Adapter configuration in JSON"
+)
 
 args = parser.parse_args()
 
