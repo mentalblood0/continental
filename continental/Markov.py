@@ -1,5 +1,4 @@
 import codecs
-
 import dataclasses
 import io
 import operator
@@ -99,6 +98,9 @@ class Markov:
                 elif w:
                     add(w)
                     w = ""
+            if w:
+                add(w)
+                w = ""
 
         stream.close()
 
