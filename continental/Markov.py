@@ -33,12 +33,17 @@ class Markov:
     def __next__(self):
         if self.current is None:
             self.shuffle()
-        assert self.current is not None
 
-        if (result := self.net.next(self.current[0])) == self.current[0]:
-            self.current = None
-            return "."
-        self.set(result)
+        while True:
+            try:
+                assert self.current is not None
+                if (result := self.net.next(self.current[0])) == self.current[0]:
+                    self.current = None
+                    return "."
+                self.set(result)
+                break
+            except EOFError:
+                continue
 
         return self.current[1]
 
