@@ -110,6 +110,4 @@ class Markov:
         stream.close()
 
         self.dictionary.create([t[0] for t in list(sorted(words.items(), key=operator.itemgetter(1)))])
-        self.net.create(
-            [tuple[int, list[tuple[int, int]]]([a[0], [b for b in set(a[1].items())]]) for a in net.items() if a[1]]
-        )
+        self.net.create([tuple[int, list[tuple[int, int]]]([a[0], [*a[1].items()]]) for a in net.items() if a[1]])
